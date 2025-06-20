@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Разом — наша історія</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Quicksand', sans-serif; background-color: #fdfdfd; color: #333; }
+    header {
+      background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://raw.githubusercontent.com/A-cyber-bit/Photo-vlada/refs/heads/main/photo2.jpg') center/cover no-repeat;
+      height: 100vh;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0 1rem;
+    }
+    header h1 { font-size: 2.5rem; }
+    .btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #ff5c8a;
+      border: none;
+      border-radius: 25px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .btn:hover { background-color: #e64573; }
+    .section {
+      padding: 60px 20px;
+      max-width: 1000px;
+      margin: auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+    }
+    .section img { width: 100%; max-width: 400px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+    .section .text { flex: 1; padding: 20px; }
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+    .gallery img {
+      width: 100%;
+      max-width: 300px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .message {
+      background: #fff5f8;
+      padding: 60px 20px;
+      text-align: center;
+      font-size: 1.2rem;
+      position: relative;
+    }
+    .heart {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 30px;
+      height: 30px;
+      background: red;
+      transform: rotate(-45deg);
+      animation: pulse 1s infinite;
+    }
+    .heart::before, .heart::after {
+      content: "";
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background: red;
+      border-radius: 50%;
+    }
+    .heart::before { top: -15px; left: 0; }
+    .heart::after { left: 15px; top: 0; }
+    @keyframes pulse {
+      0% { transform: scale(1) rotate(-45deg); }
+      50% { transform: scale(1.2) rotate(-45deg); }
+      100% { transform: scale(1) rotate(-45deg); }
+    }
+    #messageColumn {
+      background: #f9f9f9;
+      padding: 30px 20px;
+      margin-top: 20px;
+      border-radius: 10px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    footer {
+      background-color: #222;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9rem;
+    }
+  .header {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Найкращі моменти — в наших руках</h1>
+    <button class="btn" onclick="document.getElementById('section').scrollIntoView({behavior: 'smooth'});">Переглянути спогади</button>
+  </div>
+</header>
+
+<section id="section" class="section">
+    <div class="text">
+    <h2>Тепло наших дотиків</h2>
+    <p>Цей момент — як символ довіри, любові та ніжності. Ми тримаємось міцно — і більше нічого не потрібно.</p>
+  </div>
+  <img src="https://raw.githubusercontent.com/A-cyber-bit/Photo-vlada/refs/heads/main/photo1.jpg" alt="Момент, коли тримаємося за руки">
+</section>
+
+<section id="gallery" class="gallery">
+  <h1>Галерея спогадів</h1>
+  <img src="https://raw.githubusercontent.com/A-cyber-bit/Photo-vlada/refs/heads/main/photo1.jpg" alt="Фото з прогулянки">
+  <img src="https://raw.githubusercontent.com/A-cyber-bit/Photo-vlada/refs/heads/main/photo2.jpg" alt="Дівчина з песиком на заході сонця">
+  <img src="https://raw.githubusercontent.com/A-cyber-bit/Photo-vlada/refs/heads/main/photo3.jpg" alt="Щаслива дівчинка">
+  <img src="https://raw.githubusercontent.com/A-cyber-bit/Photo-vlada/refs/heads/main/photo4.jpg" alt="Очі з-за спини">
+  <img src="https://raw.githubusercontent.com/A-cyber-bit/Photo-vlada/refs/heads/main/photo5.jpg" alt="Поцілунок">
+</section>
+
+<section class="message">
+  <div class="heart"></div>
+  <p>Я зберіг(ла) ці моменти не лише в серці, а й тут — щоб завжди згадувати, як ми починали…</p>
+</section>
+
+<section class="section" style="flex-direction: column;">
+  <h2 style="margin-bottom: 20px;">💌 Напиши повідомлення</h2>
+  <form onsubmit="sendMessage(event)" style="max-width: 500px; width: 100%; display: flex; flex-direction: column; gap: 10px;">
+    <textarea id="userMessage" placeholder="Твоє повідомлення..." required style="resize: none; padding: 10px; border-radius: 10px; border: 1px solid #ccc; height: 100px;"></textarea>
+    <button type="submit" class="btn">Надіслати</button>
+  </form>
+  <div id="messageColumn"></div>
+</section>
+
+<footer>
+  <p> Разом з Владуською — 31.07.2025</p>
+</footer>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyAr6DamSrcdJKTeF-uczx1glJIuKdCumPA",
+    authDomain: "love-ede5a.firebaseapp.com",
+    databaseURL: "https://love-ede5a-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "love-ede5a",
+    storageBucket: "love-ede5a.firebasestorage.app",
+    messagingSenderId: "740550607905",
+    appId: "1:740550607905:web:6f69595567a0ae9d99cf60",
+    measurementId: "G-GL55FCLP7P"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+  function sendMessage(e) {
+    e.preventDefault();
+    const text = document.getElementById('userMessage').value;
+    db.ref('messages').push({ text });
+    document.getElementById('userMessage').value = '';
+  }
+
+  function loadMessages() {
+    db.ref('messages').on('value', snapshot => {
+      const messages = snapshot.val();
+      const container = document.getElementById('messageColumn');
+      container.innerHTML = '';
+      for (let id in messages) {
+        const p = document.createElement('p');
+        p.textContent = '💬 ' + messages[id].text;
+        container.appendChild(p);
+      }
+    });
+  }
+  loadMessages();
+</script>
+
+</body>
+</html>
